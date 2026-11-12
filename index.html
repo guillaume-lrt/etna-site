@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ETNA: EnTropy regularization for compressed Neural Avatar</title>
+  <meta name="description" content="Project page for ETNA: EnTropy regularization for compressed Neural Avatar (BMVC 2026).">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ETNA: EnTropy regularization for compressed Neural Avatar">
+  <meta property="og:description" content="Project page for ETNA: EnTropy regularization for compressed Neural Avatar (BMVC 2026).">
+  <meta property="og:url" content="https://guillaume-lrt.github.io/etna-site/">
+  <meta property="og:image" content="https://guillaume-lrt.github.io/etna-site/assets/img/teaser.jpg">
+  <meta property="og:image:secure_url" content="https://guillaume-lrt.github.io/etna-site/assets/img/teaser.jpg">
+  <meta property="og:image:alt" content="ETNA method overview: entropy regularization for compressed neural implicit avatars">
+  <meta property="og:site_name" content="ETNA Project Page">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ETNA: EnTropy regularization for compressed Neural Avatar">
+  <meta name="twitter:description" content="Project page for ETNA: EnTropy regularization for compressed Neural Avatar (BMVC 2026).">
+  <meta name="twitter:image" content="https://guillaume-lrt.github.io/etna-site/assets/img/teaser.jpg">
+  <meta name="twitter:image:alt" content="ETNA method overview: entropy regularization for compressed neural implicit avatars">
+
+  <!-- Bulma CSS & Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+  </script>
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title is-2 has-text-centered">ETNA: EnTropy regularization for compressed Neural Avatar</h1>
+      <h2 class="subtitle is-4 has-text-centered" style="margin-top:-0.5rem; margin-bottom:0.75rem; font-weight:500;">
+        <em>Proceedings of BMVC&nbsp;2026</em>
+      </h2>
+
+      <div class="has-text-centered authors">
+        <span class="author-block"><a href="https://orcid.org/0009-0002-2020-6551" target="_blank" rel="noopener">Guillaume Loranchet</a><sup>1,2</sup></span>
+        <span class="author-block"><a href="https://orcid.org/0000-0002-3483-552X" target="_blank" rel="noopener">João Regateiro</a><sup>1</sup></span>
+        <span class="author-block">Bharath Bhushan Damodaran<sup>1</sup></span>
+        <span class="author-block">Franck Galpin<sup>1</sup></span>
+        <span class="author-block"><a href="https://orcid.org/0000-0003-0529-7598" target="_blank" rel="noopener">Adnane Boukhayma</a><sup>2</sup></span>
+        <span class="author-block"><a href="https://orcid.org/0000-0003-2690-0077" target="_blank" rel="noopener">Franck Multon</a><sup>2</sup></span>
+        <span class="author-block"><a href="https://orcid.org/0000-0003-3603-2381" target="_blank" rel="noopener">Pierre Hellier</a><sup>2</sup></span>
+      </div>
+
+      <div class="has-text-centered is-size-6 affiliations">
+        <span class="affil"><sup>1</sup> InterDigital, Rennes, France</span>
+        &nbsp;&nbsp;&nbsp;
+        <span class="affil"><sup>2</sup> Univ Rennes, Inria, CNRS, IRISA, Rennes, France</span>
+      </div>
+
+      <div class="has-text-centered buttons is-centered" style="margin-top:1.15rem;">
+        <a class="button is-primary" href="assets/paper.pdf" target="_blank" rel="noopener">
+          <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper (PDF)</span>
+        </a>
+        <a class="button is-link is-light" href="assets/supp.pdf" target="_blank" rel="noopener">
+          <span class="icon"><i class="fas fa-file-alt"></i></span><span>Supplementary (PDF)</span>
+        </a>
+        <!-- <a class="button is-dark" href="#" target="_blank" rel="noopener">
+          <span class="icon"><i class="fab fa-github"></i></span><span>Code (coming soon)</span>
+        </a> -->
+        <a class="button" href="#bibtex">
+          <span class="icon"><i class="fas fa-quote-right"></i></span><span>Citation</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Abstract & Teaser -->
+<section class="section">
+  <div class="container">
+    <div class="columns is-vcentered">
+      <div class="column is-6">
+        <h2 class="title is-4">Abstract</h2>
+        <div class="content">
+          <p>
+            The growing demand for realistic and controllable virtual humans in large-scale applications such as online multi-user environments, gaming, and shared immersive realities raises challenges for memory efficiency and bandwidth usage. While implicit neural representations (INRs) provide a powerful alternative to explicit mesh-based avatars, they often require large neural networks whose parameters are not optimized for compression, limiting scalability. We introduce an entropy regularization framework for neural implicit avatar representations that shapes the weight distribution during training, making it suitable for standard compression schemes. Our approach adds regularization losses, including a differentiable soft-entropy loss and a L1 loss between quantized and unquantized weights, enabling the network to minimize entropy while maintaining high-fidelity geometric reconstruction. Unlike Quantization-Aware Training (QAT), our method does not require a custom forward pass and is meant to be used jointly with post-training compression tools. Experiments on DFaust, including unseen identities and poses, demonstrate significant reductions in model size while preserving generative capabilities and show improvements over standard PTQ and QAT baselines. Entropy regularization enables robust compression at lower bitrates without sacrificing visual fidelity and reconstruction accuracy.
+          </p>
+        </div>
+      </div>
+      <div class="column is-6">
+        <h2 class="title is-4">Overview</h2>
+        <div class="figure-box">
+          <figure class="image">
+            <img src="assets/img/teaser.jpg" alt="ETNA method overview comparing baseline LHB and entropy-regularized LHB">
+          </figure>
+          <p class="figure-caption">
+            <strong>Figure 1 (Paper):</strong> ETNA shapes the weight distribution of implicit virtual human models during training so that an off-the-shelf range coder achieves smaller checkpoint sizes while preserving visual fidelity and reconstruction quality.
+          </p>
+        </div>
+        <!-- Optional YouTube embed if a teaser video is uploaded later:
+        <div class="video-container">
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:6px;">
+            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+                    title="ETNA teaser" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"></iframe>
+          </div>
+        </div>
+        -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Method Overview: Training & Fine-Tuning -->
+<section class="section" id="method-overview">
+  <div class="container">
+    <h2 class="title is-4">Training &amp; Fine-Tuning with Entropy Regularization</h2>
+    <div class="content">
+      <p>
+        Unlike Quantization-Aware Training (QAT), ETNA leaves the model's forward pass unchanged: unquantized weights \(W\) are used to compute the 3D occupancy reconstruction loss \(\mathcal{L}_R\), while quantized weights \(W^q\) drive the soft-entropy regularizer \(\tilde{H}\) and the boundary penalty \(\mathcal{L}_{\max}\) over fixed bounds \([b_{\min}, b_{\max}] = [-2, 2]\). An \(L_1\) alignment term keeps \(W\) and \(W^q\) close, and Stochastic Weight Averaging (SWA) stabilizes convergence:
+      </p>
+      <p>
+        \[
+          \mathcal{L} = \lambda_R \mathcal{L}_R + \lambda_{L_1} \mathcal{L}_1(W, W^q) + \lambda_{\max} \mathcal{L}_{\max} + \lambda \tilde{H}.
+        \]
+      </p>
+      <p>
+        When personalizing a shared base avatar to a new identity via teacher&ndash;student fine-tuning, the same regularization can be applied directly to the weight <em>residual</em> between the original and fine-tuned models, substantially reducing the size of identity-specific bitstreams.
+      </p>
+    </div>
+    <div class="figure-box">
+      <figure class="image">
+        <img src="assets/img/method_ft.jpg" alt="Block diagrams of training and fine-tuning pipelines with ETNA entropy regularization">
+      </figure>
+      <p class="figure-caption">
+        <strong>Figure 2 (Paper):</strong> Block diagrams of model training (left) and identity fine-tuning (right) with the proposed entropy regularization. Both pipelines keep the forward pass unmodified during training and evaluate inference using quantized weights.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Soft-Entropy Method -->
+<section class="section" id="soft-entropy">
+  <div class="container">
+    <h2 class="title is-4">Differentiable Soft-Entropy Computation</h2>
+    <div class="content">
+      <p>
+        All learnable weights are concatenated into a flattened tensor \(W \in \mathbb{R}^T\), clamped to fixed boundaries \([b_{\min}, b_{\max}]\), normalized to \([0, 1]\), and quantized to \(n = 10\) bits using the Straight-Through Estimator (STE):
+      </p>
+      <p>
+        \[
+          W^q = \Big(\lfloor w_{\text{norm}} \times (2^n - 1) \rceil\Big)_{w_{\text{norm}} \in W_{\text{norm}}}.
+        \]
+      </p>
+      <p>
+        To make histogram counting differentiable across the \(2^n\) integer bins, each bin count is approximated via a Gaussian kernel \(f(x) = e^{-\sigma x^2}\) with fixed \(\sigma = 0.1\):
+      </p>
+      <p>
+        \[
+          C(b, W^q) = \sum_{w^q \in W^q} f(w^q - b), \qquad
+          p(b) = \frac{C(b, W^q)}{T}, \qquad
+          \tilde{H} = -\sum_{b} p(b) \cdot \log_2\!\big(p(b) + \varepsilon\big).
+        \]
+      </p>
+    </div>
+    <div class="figure-box">
+      <figure class="image">
+        <img src="assets/img/soft_entropy_method.jpg" alt="6-step diagram of differentiable soft-entropy computation">
+      </figure>
+      <p class="figure-caption">
+        <strong>Figure 1 (Supplementary):</strong> Overview of the 6-step soft-entropy computation. Unquantized weights (1) are clamped and normalized (2), quantized with STE (3), and compared against every bin \(b\) (4&ndash;5) using kernel \(f(x)\) to obtain differentiable soft counts and entropy (6).
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Qualitative Results (GIFs) -->
+<section class="section" id="qualitative-results">
+  <div class="container">
+    <h2 class="title is-4">Qualitative Results on Unseen Poses</h2>
+    <p class="content">
+      We evaluate ETNA on two multi-identity implicit neural avatar models—<strong>LHB</strong> and <strong>COAP</strong>—compressed with a lossless range coder. Adjusting the entropy weight \(\lambda\) provides finer rate-distortion control than lowering the quantization bit-depth \(q\) alone, preserving recognizable identity and clean geometry at low bitrates.
+    </p>
+
+    <div class="figure-box" style="margin-bottom: 1.75rem;">
+      <h3 class="title is-5" style="margin-bottom: 0.75rem;">LHB Comparison (MPI PosePrior <code>ulr1d</code>)</h3>
+      <figure class="image">
+        <video autoplay loop muted playsinline class="teaser-video" aria-label="Animated qualitative comparison of LHB without and with ETNA entropy regularization on an unseen pose">
+          <source src="assets/img/lhb_comparison.mp4" type="video/mp4">
+        </video>
+      </figure>
+      <p class="figure-caption">
+        <strong>Figure 3 (Paper):</strong> Meshes obtained with LHB for a challenging unseen pose. Left: unregularized LHB quantized to \(q = 7, 8, 10\). Right: LHB with entropy regularization (\(\lambda = 650\) and \(\lambda = 250\) at \(q = 10\)). At \(\lambda = 250\), ETNA matches the \(q = 10\) Chamfer distance (\(0.44\text{ cm}\)) with less than half the file size (\(172\text{ KB}\) vs. \(384\text{ KB}\)), and avoids severe distortion at low bitrates (\(117\text{ KB}\) vs. \(166\text{ KB}\)).
+      </p>
+    </div>
+
+    <div class="figure-box">
+      <h3 class="title is-5" style="margin-bottom: 0.75rem;">COAP Comparison</h3>
+      <figure class="image">
+        <img src="assets/img/coap_comparison.gif" alt="Animated qualitative comparison of COAP without and with ETNA entropy regularization on an unseen pose">
+      </figure>
+      <p class="figure-caption">
+        <strong>Figure 4 (Paper):</strong> Meshes obtained with COAP for an unseen pose. Left: unquantized COAP (\(16\text{ MB}\), IoU \(0.87\)) and PTQ baselines (\(q = 7, 10\)). Right: COAP with entropy regularization (\(\lambda = 5\) and \(\lambda = 0.1\) at \(q = 10\)). At \(\lambda = 0.1\), ETNA halves the encoded size (\(326\text{ KB}\) vs. \(641\text{ KB}\)) while achieving higher IoU (\(0.80\) vs. \(0.78\)).
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Quantitative Results: Interactive Swappable Graphs + Table 1 -->
+<section class="section" id="quantitative-results">
+  <div class="container">
+    <h2 class="title is-4">Quantitative Results</h2>
+    <p class="content">
+      Use the tabs or arrows below to switch between the rate-distortion curves comparing ETNA against Post-Training Quantization (PTQ), Quantization-Aware Training (QAT), and NNCodec residual compression on unseen identities and poses of DFaust.
+    </p>
+
+    <!-- Swappable 3-in-1 Graph Widget -->
+    <div class="figure-box" id="graph-viewer" tabindex="0" aria-label="Quantitative results plot switcher">
+      <div class="graph-controls">
+        <div class="graph-tabs" role="tablist" aria-label="Select quantitative plot">
+          <button type="button" class="button is-small is-link" data-index="0" role="tab" aria-selected="true">
+            1. LHB: ETNA vs. PTQ &amp; QAT
+          </button>
+          <button type="button" class="button is-small is-light" data-index="1" role="tab" aria-selected="false">
+            2. COAP: ETNA vs. PTQ &amp; QAT
+          </button>
+          <button type="button" class="button is-small is-light" data-index="2" role="tab" aria-selected="false">
+            3. Fine-Tuning Residual
+          </button>
+        </div>
+        <div class="graph-nav">
+          <button type="button" class="button is-small" id="graph-prev" aria-label="Previous plot" title="Previous plot">
+            <span class="icon"><i class="fas fa-chevron-left"></i></span>
+          </button>
+          <span class="graph-counter" id="graph-counter">1 / 3</span>
+          <button type="button" class="button is-small" id="graph-next" aria-label="Next plot" title="Next plot">
+            <span class="icon"><i class="fas fa-chevron-right"></i></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="graph-stage">
+        <img id="graph-img" src="assets/img/lhb_qat_vs_ptq.jpg" alt="LHB IoU versus file size comparing ETNA, QAT, and PTQ">
+      </div>
+
+      <div class="graph-dots" aria-hidden="true">
+        <button type="button" class="graph-dot is-active" data-index="0"></button>
+        <button type="button" class="graph-dot" data-index="1"></button>
+        <button type="button" class="graph-dot" data-index="2"></button>
+      </div>
+
+      <p class="figure-caption" id="graph-caption">
+        <strong>Figure 5(a) (Paper) &mdash; LHB:</strong> Surface IoU versus range-coded checkpoint size (KB) on unseen identities and poses. Entropy regularization (blue, \(q=10\) with varying \(\lambda\)) consistently outperforms PTQ (red), QAT without regularization (purple, \(q=8\)), and QAT with regularization (green, \(q=8\)).
+      </p>
+    </div>
+
+    <!-- Table 1 Summary -->
+    <div class="figure-box" style="margin-top: 1.75rem;">
+      <h3 class="title is-5" style="margin-bottom: 0.75rem;">Model Size, Parameter Entropy, and Reconstruction Quality (Table 1)</h3>
+      <div class="table-container">
+        <table class="table is-fullwidth is-hoverable is-bordered results-table">
+          <thead>
+            <tr>
+              <th>Generative Model</th>
+              <th>Total Params (M)</th>
+              <th>Entropy (bits/param)</th>
+              <th>Total Bits (M)</th>
+              <th>Chamfer Dist (cm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SMPL Female</td>
+              <td>5.22</td>
+              <td>20.00</td>
+              <td>104.35</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td>gDNA</td>
+              <td>31.13</td>
+              <td>24.45</td>
+              <td>761.25</td>
+              <td>N/A</td>
+            </tr>
+            <tr>
+              <td>COAP</td>
+              <td>1.27</td>
+              <td>16.02</td>
+              <td>20.30</td>
+              <td>0.49</td>
+            </tr>
+            <tr>
+              <td>Fast-SNARF</td>
+              <td>0.52</td>
+              <td>18.98</td>
+              <td>9.86</td>
+              <td>0.30</td>
+            </tr>
+            <tr>
+              <td>LHB</td>
+              <td>0.52</td>
+              <td>18.99</td>
+              <td>9.92</td>
+              <td>0.30</td>
+            </tr>
+            <tr class="is-ours">
+              <td>COAP + Regularization (ours)</td>
+              <td>1.27</td>
+              <td>2.97</td>
+              <td>3.77</td>
+              <td>0.47</td>
+            </tr>
+            <tr class="is-ours">
+              <td>LHB + Regularization (ours)</td>
+              <td>0.52</td>
+              <td>2.40</td>
+              <td>1.25</td>
+              <td>0.30</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="figure-caption">
+        <strong>Table 1 (Paper):</strong> Entropy regularization reduces parameter entropy by roughly 8&times; on LHB (from 18.99 to 2.40 bits/param) and over 5&times; on COAP (from 16.02 to 2.97 bits/param) on the synthetic DFaust dataset without degrading Chamfer distance.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- BibTeX -->
+<section class="section" id="bibtex">
+  <div class="container content">
+    <h2 class="title is-4">BibTeX</h2>
+    <div class="bibtex-wrapper">
+      <button type="button" class="button is-small is-light copy-bibtex-btn" id="copy-bibtex">
+        <span class="icon"><i class="fas fa-copy"></i></span>
+        <span id="copy-bibtex-label">Copy</span>
+      </button>
+      <pre id="bibtex-code">@inproceedings{loranchet2026etna,
+  author    = {Loranchet, Guillaume and Regateiro, Jo{\~a}o and Damodaran, Bharath Bhushan and Galpin, Franck and Boukhayma, Adnane and Multon, Franck and Hellier, Pierre},
+  title     = {{ETNA}: {EnTropy} regularization for compressed {Neural Avatar}},
+  booktitle = {Proceedings of the British Machine Vision Conference (BMVC)},
+  year      = {2026}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="content has-text-centered is-size-7">
+    <p>Template inspired by <em>nerfies.github.io</em></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  const graphs = [
+    {
+      src: 'assets/img/lhb_qat_vs_ptq.jpg',
+      alt: 'LHB IoU versus file size comparing ETNA, QAT, and PTQ',
+      caption: '<strong>Figure 5(a) (Paper) &mdash; LHB:</strong> Surface IoU versus range-coded checkpoint size (KB) on unseen identities and poses. Entropy regularization (blue, \\(q=10\\) with varying \\(\\lambda\\)) consistently outperforms PTQ (red), QAT without regularization (purple, \\(q=8\\)), and QAT with regularization (green, \\(q=8\\)).'
+    },
+    {
+      src: 'assets/img/coap_results.jpg',
+      alt: 'COAP IoU versus file size comparing ETNA, QAT, and PTQ',
+      caption: '<strong>Figure 5(b) (Paper) &mdash; COAP:</strong> Surface IoU versus range-coded checkpoint size (KB) on unseen identities and poses. Entropy regularization (blue, \\(q=10\\) with varying \\(\\lambda\\)) achieves a substantially better rate-reconstruction trade-off than PTQ (red) and QAT (purple, \\(q=8\\)).'
+    },
+    {
+      src: 'assets/img/residual.jpg',
+      alt: 'Median Chamfer distance versus file size for fine-tuning residual compression',
+      caption: '<strong>Figure 9(a) (Paper) &mdash; Fine-Tuning Residual Compression:</strong> Median Chamfer distance (cm) versus residual bitstream size (KB) across five leave-one-subject-out experiments on a new identity. Regularized fine-tuning encoded in 10 bits with range coder (red, varying \\(\\lambda\\)) outperforms unregularized fine-tuning compressed with NNCodec (orange, varying \\(qp\\)).'
+    }
+  ];
+
+  let current = 0;
+  const img = document.getElementById('graph-img');
+  const caption = document.getElementById('graph-caption');
+  const counter = document.getElementById('graph-counter');
+  const tabs = document.querySelectorAll('.graph-tabs button');
+  const dots = document.querySelectorAll('.graph-dots .graph-dot');
+  const prevBtn = document.getElementById('graph-prev');
+  const nextBtn = document.getElementById('graph-next');
+  const viewer = document.getElementById('graph-viewer');
+
+  function renderGraph(index) {
+    current = (index + graphs.length) % graphs.length;
+    const item = graphs[current];
+    img.style.opacity = '0.25';
+    setTimeout(() => {
+      img.src = item.src;
+      img.alt = item.alt;
+      img.style.opacity = '1';
+    }, 90);
+    caption.innerHTML = item.caption;
+    counter.textContent = `${current + 1} / ${graphs.length}`;
+
+    tabs.forEach((btn, i) => {
+      const active = i === current;
+      btn.classList.toggle('is-link', active);
+      btn.classList.toggle('is-light', !active);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === current);
+    });
+
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      window.MathJax.typesetPromise([caption]).catch(() => {});
+    }
+  }
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => renderGraph(parseInt(btn.dataset.index, 10)));
+  });
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => renderGraph(parseInt(dot.dataset.index, 10)));
+  });
+
+  prevBtn.addEventListener('click', () => renderGraph(current - 1));
+  nextBtn.addEventListener('click', () => renderGraph(current + 1));
+
+  viewer.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') renderGraph(current - 1);
+    if (e.key === 'ArrowRight') renderGraph(current + 1);
+  });
+
+  // Preload graph images for instant swapping
+  graphs.forEach(g => {
+    const pre = new Image();
+    pre.src = g.src;
+  });
+
+  // Copy BibTeX button
+  const copyBtn = document.getElementById('copy-bibtex');
+  const copyLabel = document.getElementById('copy-bibtex-label');
+  const bibtexCode = document.getElementById('bibtex-code');
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(bibtexCode.textContent.trim()).then(() => {
+      copyLabel.textContent = 'Copied!';
+      setTimeout(() => { copyLabel.textContent = 'Copy'; }, 1800);
+    });
+  });
+})();
+</script>
+</body>
+</html>
